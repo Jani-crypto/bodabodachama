@@ -23,7 +23,7 @@ const Reminders = () => {
   const fetchReminders = async () => {
     if (!profile) return;
     let query = supabase.from("reminders").select("*, profiles!reminders_member_id_fkey(full_name)").order("created_at", { ascending: false });
-    if (!isLeader) {
+    if (!isAdmin) {
       query = query.eq("member_id", profile.id);
     }
     const { data } = await query;
