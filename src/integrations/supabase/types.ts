@@ -14,7 +14,163 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contributions: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          member_id: string
+          notes: string | null
+          payment_date: string
+          recorded_by: string
+          week_number: number
+          year: number
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          member_id: string
+          notes?: string | null
+          payment_date?: string
+          recorded_by: string
+          week_number: number
+          year?: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          member_id?: string
+          notes?: string | null
+          payment_date?: string
+          recorded_by?: string
+          week_number?: number
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contributions_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contributions_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_deadlines: {
+        Row: {
+          amount_due: number
+          created_at: string
+          created_by: string
+          deadline_date: string
+          id: string
+          week_number: number
+          year: number
+        }
+        Insert: {
+          amount_due: number
+          created_at?: string
+          created_by: string
+          deadline_date: string
+          id?: string
+          week_number: number
+          year?: number
+        }
+        Update: {
+          amount_due?: number
+          created_at?: string
+          created_by?: string
+          deadline_date?: string
+          id?: string
+          week_number?: number
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_deadlines_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string
+          id: string
+          phone: string | null
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          role?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reminders: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean | null
+          member_id: string
+          message: string
+          week_number: number
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          member_id: string
+          message: string
+          week_number: number
+          year?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          member_id?: string
+          message?: string
+          week_number?: number
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminders_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
