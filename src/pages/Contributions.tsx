@@ -66,7 +66,7 @@ const Contributions = () => {
     const rows = contributions.map((c) =>
       `"${(c as any).profiles?.full_name ?? ""}",${c.amount},${c.week_number},${c.year},${c.payment_date},"${c.notes ?? ""}"`
     ).join("\n");
-    const blob = new Blob([headers + rows], { type: "text/csv" });
+    const blob = new Blob([headers.replace("Amount", "Amount (KSH)") + rows], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -104,7 +104,7 @@ const Contributions = () => {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Amount (UGX)</Label>
+                    <Label>Amount (KSH)</Label>
                     <Input type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} required min="1" />
                   </div>
                   <div className="space-y-2">
@@ -143,7 +143,7 @@ const Contributions = () => {
                   contributions.map((c) => (
                     <tr key={c.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="p-3 font-medium">{(c as any).profiles?.full_name ?? "—"}</td>
-                      <td className="p-3 text-accent font-semibold">UGX {Number(c.amount).toLocaleString()}</td>
+                      <td className="p-3 text-accent font-semibold">KSH {Number(c.amount).toLocaleString()}</td>
                       <td className="p-3">Wk {c.week_number}</td>
                       <td className="p-3 text-muted-foreground">{c.payment_date}</td>
                       <td className="p-3 text-muted-foreground">{c.notes ?? "—"}</td>

@@ -44,16 +44,16 @@ const Reports = () => {
   }, [year]);
 
   const downloadReport = () => {
-    const headers = "Member,Total Contributions (UGX),Number of Payments,Weeks Paid\n";
+    const headers = "Member,Total Contributions (KSH),Number of Payments,Weeks Paid\n";
     const rows = report.map((r) =>
       `"${r.name}",${r.total},${r.payments},"${r.weeks.join(", ")}"`
     ).join("\n");
-    const summary = `\n\nSummary\nTotal Amount,UGX ${totals.totalAmount.toLocaleString()}\nTotal Payments,${totals.totalPayments}\n`;
+    const summary = `\n\nSummary\nTotal Amount,KSH ${totals.totalAmount.toLocaleString()}\nTotal Payments,${totals.totalPayments}\n`;
     const blob = new Blob([headers + rows + summary], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `bodasave-report-${year}.csv`;
+    a.download = `bodachama-report-${year}.csv`;
     a.click();
   };
 
@@ -77,7 +77,7 @@ const Reports = () => {
         <Card className="glass-card">
           <CardContent className="p-5">
             <p className="text-sm text-muted-foreground">Total Collected ({year})</p>
-            <p className="text-3xl font-bold text-accent mt-1">UGX {totals.totalAmount.toLocaleString()}</p>
+            <p className="text-3xl font-bold text-accent mt-1">KSH {totals.totalAmount.toLocaleString()}</p>
           </CardContent>
         </Card>
         <Card className="glass-card">
@@ -102,7 +102,7 @@ const Reports = () => {
                 <tr className="border-b bg-muted/50">
                   <th className="text-left p-3 font-medium">#</th>
                   <th className="text-left p-3 font-medium">Member</th>
-                  <th className="text-left p-3 font-medium">Total (UGX)</th>
+                  <th className="text-left p-3 font-medium">Total (KSH)</th>
                   <th className="text-left p-3 font-medium">Payments</th>
                   <th className="text-left p-3 font-medium">Weeks</th>
                 </tr>

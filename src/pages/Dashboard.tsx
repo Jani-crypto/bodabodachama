@@ -55,12 +55,12 @@ const Dashboard = () => {
   const statCards = isLeader
     ? [
         { label: "Total Members", value: stats.members, icon: Users, color: "text-primary" },
-        { label: "Total Contributions", value: `UGX ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
+        { label: "Total Contributions", value: `KSH ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
         { label: "Pending Reminders", value: stats.unreadReminders, icon: Bell, color: "text-warning" },
         { label: "Current Week", value: `Week ${stats.thisWeek}`, icon: TrendingUp, color: "text-primary" },
       ]
     : [
-        { label: "My Total Contributions", value: `UGX ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
+        { label: "My Total Contributions", value: `KSH ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
         { label: "Unread Reminders", value: stats.unreadReminders, icon: Bell, color: "text-warning" },
       ];
 
@@ -106,7 +106,7 @@ const Dashboard = () => {
                     </p>
                     <p className="text-xs text-muted-foreground">Week {c.week_number}, {c.year}</p>
                   </div>
-                  <span className="font-semibold text-accent">UGX {Number(c.amount).toLocaleString()}</span>
+                  <span className="font-semibold text-accent">KSH {Number(c.amount).toLocaleString()}</span>
                 </div>
               ))}
             </div>

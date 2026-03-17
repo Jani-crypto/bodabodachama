@@ -49,7 +49,7 @@ const Auth = () => {
           <div className="mx-auto w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
             <Bike className="w-8 h-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl font-bold">BodaSave</CardTitle>
+          <CardTitle className="text-2xl font-bold">Boda Chama</CardTitle>
           <CardDescription>
             {isLogin ? "Sign in to manage your group" : "Create your account"}
           </CardDescription>

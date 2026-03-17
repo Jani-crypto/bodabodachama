@@ -42,7 +42,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
             <Bike className="w-5 h-5 text-sidebar-primary-foreground" />
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight">BodaSave</h1>
+            <h1 className="font-bold text-lg leading-tight">Boda Chama</h1>
             <p className="text-xs text-sidebar-foreground/60">Group Manager</p>
           </div>
           <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden">
@@ -93,7 +93,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
             <Menu className="w-6 h-6" />
           </button>
           <h2 className="text-lg font-semibold">
-            {navItems.find((n) => n.to === location.pathname)?.label ?? "BodaSave"}
+            {navItems.find((n) => n.to === location.pathname)?.label ?? "Boda Chama"}
           </h2>
         </header>
         <div className="p-4 lg:p-6 max-w-7xl mx-auto">{children}</div>
