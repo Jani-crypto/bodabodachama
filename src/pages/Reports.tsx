@@ -77,7 +77,7 @@ const Reports = () => {
         <Card className="glass-card">
           <CardContent className="p-5">
             <p className="text-sm text-muted-foreground">Total Collected ({year})</p>
-            <p className="text-3xl font-bold text-accent mt-1">UGX {totals.totalAmount.toLocaleString()}</p>
+            <p className="text-3xl font-bold text-accent mt-1">KSH {totals.totalAmount.toLocaleString()}</p>
           </CardContent>
         </Card>
         <Card className="glass-card">
