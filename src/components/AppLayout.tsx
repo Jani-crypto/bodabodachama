@@ -42,7 +42,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
             <Bike className="w-5 h-5 text-sidebar-primary-foreground" />
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-tight">BodaSave</h1>
+            <h1 className="font-bold text-lg leading-tight">Boda Chama</h1>
             <p className="text-xs text-sidebar-foreground/60">Group Manager</p>
           </div>
           <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden">
