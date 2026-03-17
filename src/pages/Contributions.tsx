@@ -38,8 +38,8 @@ const Contributions = () => {
 
   useEffect(() => {
     fetchContributions();
-    if (isLeader) fetchMembers();
-  }, [isLeader, profile]);
+    if (isAdmin) fetchMembers();
+  }, [isAdmin, profile]);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
