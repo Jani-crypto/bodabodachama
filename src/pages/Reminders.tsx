@@ -32,10 +32,10 @@ const Reminders = () => {
 
   useEffect(() => {
     fetchReminders();
-    if (isLeader) {
+    if (isAdmin) {
       supabase.from("profiles").select("id, full_name").then(({ data }) => setMembers(data ?? []));
     }
-  }, [isLeader, profile]);
+  }, [isAdmin, profile]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
