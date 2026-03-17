@@ -104,7 +104,7 @@ const Contributions = () => {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Amount (UGX)</Label>
+                    <Label>Amount (KSH)</Label>
                     <Input type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} required min="1" />
                   </div>
                   <div className="space-y-2">
