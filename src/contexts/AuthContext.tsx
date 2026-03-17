@@ -15,7 +15,8 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  isLeader: boolean;
+  isAdmin: boolean;
+  refreshProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -34,6 +35,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .eq("user_id", userId)
       .single();
     setProfile(data);
+  };
+
+  const refreshProfile = async () => {
+    if (user) await fetchProfile(user.id);
   };
 
   useEffect(() => {
@@ -69,7 +74,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{
       user, session, profile, loading,
-      isLeader: profile?.role === "leader",
+      isAdmin: profile?.role === "leader",
+      refreshProfile,
       signOut,
     }}>
       {children}

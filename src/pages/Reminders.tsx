@@ -13,7 +13,7 @@ import { Bell, Plus, Check, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const Reminders = () => {
-  const { isLeader, profile } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const { toast } = useToast();
   const [reminders, setReminders] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
@@ -23,7 +23,7 @@ const Reminders = () => {
   const fetchReminders = async () => {
     if (!profile) return;
     let query = supabase.from("reminders").select("*, profiles!reminders_member_id_fkey(full_name)").order("created_at", { ascending: false });
-    if (!isLeader) {
+    if (!isAdmin) {
       query = query.eq("member_id", profile.id);
     }
     const { data } = await query;
@@ -32,10 +32,10 @@ const Reminders = () => {
 
   useEffect(() => {
     fetchReminders();
-    if (isLeader) {
+    if (isAdmin) {
       supabase.from("profiles").select("id, full_name").then(({ data }) => setMembers(data ?? []));
     }
-  }, [isLeader, profile]);
+  }, [isAdmin, profile]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,7 +94,7 @@ const Reminders = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold">Reminders</h1>
-        {isLeader && (
+        {isAdmin && (
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={sendToAll}>
               <AlertTriangle className="w-4 h-4 mr-1" /> Remind Unpaid
@@ -151,7 +151,7 @@ const Reminders = () => {
                   </div>
                   <p className="text-sm text-muted-foreground">{r.message}</p>
                 </div>
-                {!r.is_read && !isLeader && (
+                {!r.is_read && !isAdmin && (
                   <Button size="sm" variant="ghost" onClick={() => markRead(r.id)}>
                     <Check className="w-4 h-4" />
                   </Button>

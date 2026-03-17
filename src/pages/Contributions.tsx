@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus, Download } from "lucide-react";
 
 const Contributions = () => {
-  const { isLeader, profile } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const { toast } = useToast();
   const [contributions, setContributions] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
@@ -24,7 +24,7 @@ const Contributions = () => {
       .select("*, profiles!contributions_member_id_fkey(full_name)")
       .order("created_at", { ascending: false });
 
-    if (!isLeader) {
+    if (!isAdmin) {
       query = query.eq("member_id", profile.id);
     }
     const { data } = await query;
@@ -38,8 +38,8 @@ const Contributions = () => {
 
   useEffect(() => {
     fetchContributions();
-    if (isLeader) fetchMembers();
-  }, [isLeader, profile]);
+    if (isAdmin) fetchMembers();
+  }, [isAdmin, profile]);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +82,7 @@ const Contributions = () => {
           <Button variant="outline" size="sm" onClick={downloadCSV}>
             <Download className="w-4 h-4 mr-1" /> Export
           </Button>
-          {isLeader && (
+          {isAdmin && (
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button size="sm"><Plus className="w-4 h-4 mr-1" /> Record Payment</Button>

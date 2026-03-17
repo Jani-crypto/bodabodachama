@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Wallet, Bell, TrendingUp } from "lucide-react";
 
 const Dashboard = () => {
-  const { isLeader, profile } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const [stats, setStats] = useState({ members: 0, totalContributions: 0, unreadReminders: 0, thisWeek: 0 });
   const [recentContributions, setRecentContributions] = useState<any[]>([]);
 
@@ -13,7 +13,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
       if (!profile) return;
 
-      if (isLeader) {
+      if (isAdmin) {
         const [membersRes, contribRes, remindersRes] = await Promise.all([
           supabase.from("profiles").select("id", { count: "exact" }),
           supabase.from("contributions").select("amount"),
@@ -50,9 +50,9 @@ const Dashboard = () => {
       }
     };
     fetchStats();
-  }, [isLeader, profile]);
+  }, [isAdmin, profile]);
 
-  const statCards = isLeader
+  const statCards = isAdmin
     ? [
         { label: "Total Members", value: stats.members, icon: Users, color: "text-primary" },
         { label: "Total Contributions", value: `KSH ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
