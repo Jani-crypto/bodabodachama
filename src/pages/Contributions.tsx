@@ -143,7 +143,7 @@ const Contributions = () => {
                   contributions.map((c) => (
                     <tr key={c.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="p-3 font-medium">{(c as any).profiles?.full_name ?? "—"}</td>
-                      <td className="p-3 text-accent font-semibold">UGX {Number(c.amount).toLocaleString()}</td>
+                      <td className="p-3 text-accent font-semibold">KSH {Number(c.amount).toLocaleString()}</td>
                       <td className="p-3">Wk {c.week_number}</td>
                       <td className="p-3 text-muted-foreground">{c.payment_date}</td>
                       <td className="p-3 text-muted-foreground">{c.notes ?? "—"}</td>
