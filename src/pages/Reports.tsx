@@ -48,7 +48,7 @@ const Reports = () => {
     const rows = report.map((r) =>
       `"${r.name}",${r.total},${r.payments},"${r.weeks.join(", ")}"`
     ).join("\n");
-    const summary = `\n\nSummary\nTotal Amount,UGX ${totals.totalAmount.toLocaleString()}\nTotal Payments,${totals.totalPayments}\n`;
+    const summary = `\n\nSummary\nTotal Amount,KSH ${totals.totalAmount.toLocaleString()}\nTotal Payments,${totals.totalPayments}\n`;
     const blob = new Blob([headers + rows + summary], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
