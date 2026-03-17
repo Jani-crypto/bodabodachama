@@ -60,7 +60,7 @@ const Dashboard = () => {
         { label: "Current Week", value: `Week ${stats.thisWeek}`, icon: TrendingUp, color: "text-primary" },
       ]
     : [
-        { label: "My Total Contributions", value: `UGX ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
+        { label: "My Total Contributions", value: `KSH ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
         { label: "Unread Reminders", value: stats.unreadReminders, icon: Bell, color: "text-warning" },
       ];
 
