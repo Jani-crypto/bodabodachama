@@ -9,6 +9,7 @@ import MembersPage from "./pages/MembersPage";
 import ContributionsPage from "./pages/ContributionsPage";
 import RemindersPage from "./pages/RemindersPage";
 import ReportsPage from "./pages/ReportsPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
