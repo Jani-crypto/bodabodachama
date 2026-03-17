@@ -102,7 +102,7 @@ const Reports = () => {
                 <tr className="border-b bg-muted/50">
                   <th className="text-left p-3 font-medium">#</th>
                   <th className="text-left p-3 font-medium">Member</th>
-                  <th className="text-left p-3 font-medium">Total (UGX)</th>
+                  <th className="text-left p-3 font-medium">Total (KSH)</th>
                   <th className="text-left p-3 font-medium">Payments</th>
                   <th className="text-left p-3 font-medium">Weeks</th>
                 </tr>

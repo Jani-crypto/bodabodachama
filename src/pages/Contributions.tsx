@@ -66,7 +66,7 @@ const Contributions = () => {
     const rows = contributions.map((c) =>
       `"${(c as any).profiles?.full_name ?? ""}",${c.amount},${c.week_number},${c.year},${c.payment_date},"${c.notes ?? ""}"`
     ).join("\n");
-    const blob = new Blob([headers + rows], { type: "text/csv" });
+    const blob = new Blob([headers.replace("Amount", "Amount (KSH)") + rows], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;

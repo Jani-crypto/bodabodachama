@@ -93,7 +93,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
             <Menu className="w-6 h-6" />
           </button>
           <h2 className="text-lg font-semibold">
-            {navItems.find((n) => n.to === location.pathname)?.label ?? "BodaSave"}
+            {navItems.find((n) => n.to === location.pathname)?.label ?? "Boda Chama"}
           </h2>
         </header>
         <div className="p-4 lg:p-6 max-w-7xl mx-auto">{children}</div>

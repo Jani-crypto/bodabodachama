@@ -106,7 +106,7 @@ const Dashboard = () => {
                     </p>
                     <p className="text-xs text-muted-foreground">Week {c.week_number}, {c.year}</p>
                   </div>
-                  <span className="font-semibold text-accent">UGX {Number(c.amount).toLocaleString()}</span>
+                  <span className="font-semibold text-accent">KSH {Number(c.amount).toLocaleString()}</span>
                 </div>
               ))}
             </div>
