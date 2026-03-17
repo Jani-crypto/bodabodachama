@@ -50,9 +50,9 @@ const Dashboard = () => {
       }
     };
     fetchStats();
-  }, [isLeader, profile]);
+  }, [isAdmin, profile]);
 
-  const statCards = isLeader
+  const statCards = isAdmin
     ? [
         { label: "Total Members", value: stats.members, icon: Users, color: "text-primary" },
         { label: "Total Contributions", value: `KSH ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },

@@ -151,7 +151,7 @@ const Reminders = () => {
                   </div>
                   <p className="text-sm text-muted-foreground">{r.message}</p>
                 </div>
-                {!r.is_read && !isLeader && (
+                {!r.is_read && !isAdmin && (
                   <Button size="sm" variant="ghost" onClick={() => markRead(r.id)}>
                     <Check className="w-4 h-4" />
                   </Button>
