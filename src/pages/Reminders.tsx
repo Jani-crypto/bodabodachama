@@ -94,7 +94,7 @@ const Reminders = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold">Reminders</h1>
-        {isLeader && (
+        {isAdmin && (
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={sendToAll}>
               <AlertTriangle className="w-4 h-4 mr-1" /> Remind Unpaid
