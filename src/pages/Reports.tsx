@@ -44,7 +44,7 @@ const Reports = () => {
   }, [year]);
 
   const downloadReport = () => {
-    const headers = "Member,Total Contributions (UGX),Number of Payments,Weeks Paid\n";
+    const headers = "Member,Total Contributions (KSH),Number of Payments,Weeks Paid\n";
     const rows = report.map((r) =>
       `"${r.name}",${r.total},${r.payments},"${r.weeks.join(", ")}"`
     ).join("\n");
