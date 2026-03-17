@@ -1,24 +1,94 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Phone, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { Users, Phone, Plus, UserPlus } from "lucide-react";
 
 const Members = () => {
+  const { isAdmin } = useAuth();
+  const { toast } = useToast();
   const [members, setMembers] = useState<any[]>([]);
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "", full_name: "", phone: "" });
+  const [registering, setRegistering] = useState(false);
+
+  const fetchMembers = async () => {
+    const { data } = await supabase.from("profiles").select("*").order("full_name");
+    setMembers(data ?? []);
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase.from("profiles").select("*").order("full_name");
-      setMembers(data ?? []);
-    };
-    fetch();
+    fetchMembers();
   }, []);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegistering(true);
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: { full_name: form.full_name, phone: form.phone },
+          emailRedirectTo: window.location.origin,
+        },
+      });
+      if (error) throw error;
+      toast({ title: "Member registered!", description: `${form.full_name} has been added.` });
+      setOpen(false);
+      setForm({ email: "", password: "", full_name: "", phone: "" });
+      // Refresh after a short delay for profile trigger
+      setTimeout(fetchMembers, 1500);
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } finally {
+      setRegistering(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold">Members ({members.length})</h1>
+        {isAdmin && (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm"><UserPlus className="w-4 h-4 mr-1" /> Register Member</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Register New Member</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleRegister} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Full Name</Label>
+                  <Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="John Kamau" required />
+                </div>
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="member@example.com" required />
+                </div>
+                <div className="space-y-2">
+                  <Label>Password</Label>
+                  <Input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="••••••••" required minLength={6} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Phone Number</Label>
+                  <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+254 700 000000" />
+                </div>
+                <Button type="submit" className="w-full" disabled={registering}>
+                  {registering ? "Registering..." : "Register Member"}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -33,7 +103,7 @@ const Members = () => {
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold truncate">{m.full_name}</h3>
                     <Badge variant={m.role === "leader" ? "default" : "secondary"} className="text-xs">
-                      {m.role}
+                      {m.role === "leader" ? "Admin" : "Member"}
                     </Badge>
                   </div>
                   {m.phone && (

@@ -1,38 +1,48 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, Users, Wallet, Bell, FileText, LogOut, Menu, X, Bike,
+  LayoutDashboard, Users, Wallet, Bell, FileText, LogOut, Menu, X, Bike, UserCircle, Sun, Moon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/members", icon: Users, label: "Members" },
+  { to: "/members", icon: Users, label: "Members", adminOnly: true },
   { to: "/contributions", icon: Wallet, label: "Contributions" },
   { to: "/reminders", icon: Bell, label: "Reminders" },
-  { to: "/reports", icon: FileText, label: "Reports" },
+  { to: "/reports", icon: FileText, label: "Reports", adminOnly: true },
+  { to: "/profile", icon: UserCircle, label: "My Profile" },
 ];
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
-  const { profile, signOut, isLeader } = useAuth();
+  const { profile, signOut, isAdmin } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dark, setDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") === "dark";
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
 
   const filteredNav = navItems.filter((item) => {
-    if (!isLeader && (item.to === "/members" || item.to === "/reports")) return false;
+    if (item.adminOnly && !isAdmin) return false;
     return true;
   });
 
   return (
     <div className="min-h-screen flex">
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-foreground/20 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Sidebar */}
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 bg-sidebar text-sidebar-foreground flex flex-col transition-transform lg:translate-x-0 lg:static",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -69,10 +79,19 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
           ))}
         </nav>
 
-        <div className="p-3 border-t border-sidebar-border">
-          <div className="px-3 py-2 mb-2">
+        <div className="p-3 border-t border-sidebar-border space-y-2">
+          <button
+            onClick={() => setDark(!dark)}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-colors"
+          >
+            {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {dark ? "Light Mode" : "Dark Mode"}
+          </button>
+          <div className="px-3 py-2">
             <p className="text-sm font-medium truncate">{profile?.full_name}</p>
-            <p className="text-xs text-sidebar-foreground/60 capitalize">{profile?.role}</p>
+            <p className="text-xs text-sidebar-foreground/60 capitalize">
+              {profile?.role === "leader" ? "Admin" : "Member"}
+            </p>
           </div>
           <Button
             variant="ghost"
@@ -86,7 +105,6 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="flex-1 min-h-screen">
         <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-sm border-b px-4 py-3 flex items-center gap-3 lg:px-6">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden">
@@ -95,6 +113,9 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
           <h2 className="text-lg font-semibold">
             {navItems.find((n) => n.to === location.pathname)?.label ?? "Boda Chama"}
           </h2>
+          <button onClick={() => setDark(!dark)} className="ml-auto p-2 rounded-lg hover:bg-muted transition-colors">
+            {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
         </header>
         <div className="p-4 lg:p-6 max-w-7xl mx-auto">{children}</div>
       </main>
