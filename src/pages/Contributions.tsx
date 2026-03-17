@@ -82,7 +82,7 @@ const Contributions = () => {
           <Button variant="outline" size="sm" onClick={downloadCSV}>
             <Download className="w-4 h-4 mr-1" /> Export
           </Button>
-          {isLeader && (
+          {isAdmin && (
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button size="sm"><Plus className="w-4 h-4 mr-1" /> Record Payment</Button>
