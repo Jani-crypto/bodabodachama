@@ -24,7 +24,7 @@ const Contributions = () => {
       .select("*, profiles!contributions_member_id_fkey(full_name)")
       .order("created_at", { ascending: false });
 
-    if (!isLeader) {
+    if (!isAdmin) {
       query = query.eq("member_id", profile.id);
     }
     const { data } = await query;
