@@ -13,7 +13,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
       if (!profile) return;
 
-      if (isLeader) {
+      if (isAdmin) {
         const [membersRes, contribRes, remindersRes] = await Promise.all([
           supabase.from("profiles").select("id", { count: "exact" }),
           supabase.from("contributions").select("amount"),
