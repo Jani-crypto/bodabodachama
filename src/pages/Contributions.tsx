@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus, Download } from "lucide-react";
 
 const Contributions = () => {
-  const { isLeader, profile } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const { toast } = useToast();
   const [contributions, setContributions] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
