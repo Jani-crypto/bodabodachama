@@ -55,7 +55,7 @@ const Dashboard = () => {
   const statCards = isLeader
     ? [
         { label: "Total Members", value: stats.members, icon: Users, color: "text-primary" },
-        { label: "Total Contributions", value: `UGX ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
+        { label: "Total Contributions", value: `KSH ${stats.totalContributions.toLocaleString()}`, icon: Wallet, color: "text-accent" },
         { label: "Pending Reminders", value: stats.unreadReminders, icon: Bell, color: "text-warning" },
         { label: "Current Week", value: `Week ${stats.thisWeek}`, icon: TrendingUp, color: "text-primary" },
       ]
