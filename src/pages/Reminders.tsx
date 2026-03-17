@@ -13,7 +13,7 @@ import { Bell, Plus, Check, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const Reminders = () => {
-  const { isLeader, profile } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const { toast } = useToast();
   const [reminders, setReminders] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
