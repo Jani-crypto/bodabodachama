@@ -53,7 +53,7 @@ const Reports = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `bodasave-report-${year}.csv`;
+    a.download = `bodachama-report-${year}.csv`;
     a.click();
   };
 
