@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Wallet, Bell, TrendingUp } from "lucide-react";
 
 const Dashboard = () => {
-  const { isLeader, profile } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const [stats, setStats] = useState({ members: 0, totalContributions: 0, unreadReminders: 0, thisWeek: 0 });
   const [recentContributions, setRecentContributions] = useState<any[]>([]);
 
