@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Download } from "lucide-react";
+import { Plus, Download, FileText } from "lucide-react";
 
 const Contributions = () => {
   const { isAdmin, profile } = useAuth();
@@ -62,11 +62,11 @@ const Contributions = () => {
   };
 
   const downloadCSV = () => {
-    const headers = "Member,Amount,Week,Year,Date,Notes\n";
+    const headers = "Member,Amount (KSH),Week,Year,Date,Notes\n";
     const rows = contributions.map((c) =>
       `"${(c as any).profiles?.full_name ?? ""}",${c.amount},${c.week_number},${c.year},${c.payment_date},"${c.notes ?? ""}"`
     ).join("\n");
-    const blob = new Blob([headers.replace("Amount", "Amount (KSH)") + rows], { type: "text/csv" });
+    const blob = new Blob([headers + rows], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -74,13 +74,47 @@ const Contributions = () => {
     a.click();
   };
 
+  const downloadStatement = () => {
+    const memberName = isAdmin ? "All Members" : (profile?.full_name ?? "Member");
+    const total = contributions.reduce((s, c) => s + Number(c.amount), 0);
+    const currentYear = new Date().getFullYear();
+
+    let statement = `BODA CHAMA - CONTRIBUTION STATEMENT\n`;
+    statement += `${"=".repeat(50)}\n`;
+    statement += `Member: ${memberName}\n`;
+    statement += `Generated: ${new Date().toLocaleDateString()}\n`;
+    statement += `${"=".repeat(50)}\n\n`;
+    statement += `Date,Week,Amount (KSH),Notes\n`;
+    statement += `${"-".repeat(50)}\n`;
+
+    contributions.forEach((c) => {
+      const name = isAdmin ? `[${(c as any).profiles?.full_name}] ` : "";
+      statement += `${name}${c.payment_date},Wk ${c.week_number},KSH ${Number(c.amount).toLocaleString()},${c.notes ?? "-"}\n`;
+    });
+
+    statement += `${"-".repeat(50)}\n`;
+    statement += `TOTAL: KSH ${total.toLocaleString()}\n`;
+    statement += `Total Payments: ${contributions.length}\n`;
+    statement += `\n--- End of Statement ---\n`;
+
+    const blob = new Blob([statement], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `boda-chama-statement-${currentYear}.txt`;
+    a.click();
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold">Contributions</h1>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" size="sm" onClick={downloadStatement}>
+            <FileText className="w-4 h-4 mr-1" /> Statement
+          </Button>
           <Button variant="outline" size="sm" onClick={downloadCSV}>
-            <Download className="w-4 h-4 mr-1" /> Export
+            <Download className="w-4 h-4 mr-1" /> Export CSV
           </Button>
           {isAdmin && (
             <Dialog open={open} onOpenChange={setOpen}>
