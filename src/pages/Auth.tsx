@@ -36,7 +36,10 @@ const Auth = () => {
         toast({ title: "Account created!", description: "Check your email to verify." });
       }
     } catch (error: any) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      const message = isLogin && (error.message?.includes("Invalid login") || error.message?.includes("invalid_credentials"))
+        ? "Incorrect password or username"
+        : error.message;
+      toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
