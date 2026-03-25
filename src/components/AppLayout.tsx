@@ -118,8 +118,10 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
           </button>
         </header>
         <div className="p-4 lg:p-6 max-w-7xl mx-auto">{children}</div>
-        <footer className="border-t px-4 py-3 text-left text-xs text-muted-foreground">
-          Developed by Janice
+        <footer className="border-t px-4 py-3 text-left text-xs">
+          <span style={{ background: 'linear-gradient(90deg, hsl(280, 70%, 55%), hsl(330, 80%, 60%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }} className="font-semibold">
+            Developed by Janice
+          </span>
         </footer>
       </main>
     </div>
