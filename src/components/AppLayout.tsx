@@ -118,6 +118,9 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
           </button>
         </header>
         <div className="p-4 lg:p-6 max-w-7xl mx-auto">{children}</div>
+        <footer className="border-t px-4 py-3 text-center text-xs text-muted-foreground">
+          Developed by Janice
+        </footer>
       </main>
     </div>
   );
