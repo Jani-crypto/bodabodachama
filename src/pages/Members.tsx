@@ -8,24 +8,42 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Users, Phone, Plus, UserPlus } from "lucide-react";
+import { Phone, UserPlus, CheckCircle, XCircle } from "lucide-react";
 
 const Members = () => {
   const { isAdmin } = useAuth();
   const { toast } = useToast();
   const [members, setMembers] = useState<any[]>([]);
+  const [contributions, setContributions] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", full_name: "", phone: "" });
   const [registering, setRegistering] = useState(false);
+
+  const currentWeek = Math.ceil((((new Date()).getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / 86400000 + 1) / 7);
+  const currentYear = new Date().getFullYear();
 
   const fetchMembers = async () => {
     const { data } = await supabase.from("profiles").select("*").order("full_name");
     setMembers(data ?? []);
   };
 
+  const fetchContributions = async () => {
+    const { data } = await supabase
+      .from("contributions")
+      .select("member_id, week_number, year")
+      .eq("year", currentYear)
+      .eq("week_number", Math.floor(currentWeek));
+    setContributions(data ?? []);
+  };
+
+  const hasPaidCurrentWeek = (memberId: string) => {
+    return contributions.some(c => c.member_id === memberId);
+  };
+
   useEffect(() => {
     fetchMembers();
-  }, []);
+    if (isAdmin) fetchContributions();
+  }, [isAdmin]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,11 +118,22 @@ const Members = () => {
                   {m.full_name?.charAt(0)?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold truncate">{m.full_name}</h3>
                     <Badge variant={m.role === "leader" ? "default" : "secondary"} className="text-xs">
                       {m.role === "leader" ? "Admin" : "Member"}
                     </Badge>
+                    {isAdmin && (
+                      hasPaidCurrentWeek(m.id) ? (
+                        <Badge className="text-xs bg-green-600 hover:bg-green-700 border-0">
+                          <CheckCircle className="w-3 h-3 mr-1" /> Paid Wk {Math.floor(currentWeek)}
+                        </Badge>
+                      ) : (
+                        <Badge variant="destructive" className="text-xs">
+                          <XCircle className="w-3 h-3 mr-1" /> Unpaid Wk {Math.floor(currentWeek)}
+                        </Badge>
+                      )
+                    )}
                   </div>
                   {m.phone && (
                     <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
