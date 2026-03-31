@@ -14,18 +14,36 @@ const Members = () => {
   const { isAdmin } = useAuth();
   const { toast } = useToast();
   const [members, setMembers] = useState<any[]>([]);
+  const [contributions, setContributions] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", full_name: "", phone: "" });
   const [registering, setRegistering] = useState(false);
+
+  const currentWeek = Math.ceil((((new Date()).getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / 86400000) + 1) / 7);
+  const currentYear = new Date().getFullYear();
 
   const fetchMembers = async () => {
     const { data } = await supabase.from("profiles").select("*").order("full_name");
     setMembers(data ?? []);
   };
 
+  const fetchContributions = async () => {
+    const { data } = await supabase
+      .from("contributions")
+      .select("member_id, week_number, year")
+      .eq("year", currentYear)
+      .eq("week_number", Math.floor(currentWeek));
+    setContributions(data ?? []);
+  };
+
+  const hasPaidCurrentWeek = (memberId: string) => {
+    return contributions.some(c => c.member_id === memberId);
+  };
+
   useEffect(() => {
     fetchMembers();
-  }, []);
+    if (isAdmin) fetchContributions();
+  }, [isAdmin]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
