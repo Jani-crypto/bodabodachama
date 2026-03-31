@@ -118,11 +118,22 @@ const Members = () => {
                   {m.full_name?.charAt(0)?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold truncate">{m.full_name}</h3>
                     <Badge variant={m.role === "leader" ? "default" : "secondary"} className="text-xs">
                       {m.role === "leader" ? "Admin" : "Member"}
                     </Badge>
+                    {isAdmin && (
+                      hasPaidCurrentWeek(m.id) ? (
+                        <Badge className="text-xs bg-green-600 hover:bg-green-700 border-0">
+                          <CheckCircle className="w-3 h-3 mr-1" /> Paid Wk {Math.floor(currentWeek)}
+                        </Badge>
+                      ) : (
+                        <Badge variant="destructive" className="text-xs">
+                          <XCircle className="w-3 h-3 mr-1" /> Unpaid Wk {Math.floor(currentWeek)}
+                        </Badge>
+                      )
+                    )}
                   </div>
                   {m.phone && (
                     <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
