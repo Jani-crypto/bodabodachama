@@ -19,7 +19,7 @@ const Members = () => {
   const [form, setForm] = useState({ email: "", password: "", full_name: "", phone: "" });
   const [registering, setRegistering] = useState(false);
 
-  const currentWeek = Math.ceil((((new Date()).getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / 86400000) + 1) / 7);
+  const currentWeek = Math.ceil((((new Date()).getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / 86400000 + 1) / 7);
   const currentYear = new Date().getFullYear();
 
   const fetchMembers = async () => {
