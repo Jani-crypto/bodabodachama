@@ -54,7 +54,7 @@ const Auth = () => {
           </div>
           <CardTitle className="text-2xl font-bold">Boda Chama</CardTitle>
           <CardDescription>
-            {isLogin ? "Sign in to manage your group" : "Create your account"}
+            {isLogin ? "Sign in to manage your group" : "Jisajili"}
           </CardDescription>
         </CardHeader>
         <CardContent>
